@@ -17,8 +17,8 @@ import java.util.Date;
 
 public class CertUtil {
 
-	public static void verifyValidity(String certPath ){
-		
+	public static void verifyValidity(String certPath) {
+
 		X509Certificate cert = (X509Certificate) cert(certPath);
 		try {
 			cert.checkValidity(new Date());
@@ -27,8 +27,8 @@ public class CertUtil {
 		} catch (CertificateNotYetValidException e) {
 			e.printStackTrace();
 		}
-			}
-	
+	}
+
 	public static void verifySign(String fatherCertPath, String sonCertPath) {
 
 		Certificate son = cert(sonCertPath);
