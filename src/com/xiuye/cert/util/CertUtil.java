@@ -27,8 +27,7 @@ public class CertUtil {
 		} catch (CertificateNotYetValidException e) {
 			e.printStackTrace();
 		}
-		
-	}
+			}
 	
 	public static void verifySign(String fatherCertPath, String sonCertPath) {
 
