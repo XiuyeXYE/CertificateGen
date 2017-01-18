@@ -34,81 +34,81 @@ import com.xiuye.cert.DigitalCertificateGenerator;
 
 public class CertUtil {
 
-	public static String encodeByJKSPublicKey(String storePath,
-			String storePass, String alias, String certPass, String msg) {
+	public static byte[] encodeByJKSPublicKey(String storePath,
+			String storePass, String alias, String certPass, byte[] msg) {
 		return encodeByKeyStorePublicKey(storePath, storePass,
 				DigitalCertificateGenerator.KEY_STORE_TYPE_JKS, alias,
 				certPass, msg);
 	}
 
-	public static String decodeByJKSPublicKey(String storePath,
-			String storePass, String alias, String certPass, String msg) {
+	public static byte[] decodeByJKSPublicKey(String storePath,
+			String storePass, String alias, String certPass, byte[] msg) {
 		return decodeByKeyStorePublicKey(storePath, storePass,
 				DigitalCertificateGenerator.KEY_STORE_TYPE_JKS, alias,
 				certPass, msg);
 	}
 
-	public static String decodeByPFXPublicKey(String storePath,
-			String storePass, String alias, String certPass, String msg) {
+	public static byte[] decodeByPFXPublicKey(String storePath,
+			String storePass, String alias, String certPass, byte[] msg) {
 		return decodeByKeyStorePublicKey(storePath, storePass,
 				DigitalCertificateGenerator.KEY_STORE_TYPE_PKCS12, alias,
 				certPass, msg);
 	}
 
-	public static String encodeByPFXPublicKey(String storePath,
-			String storePass, String alias, String certPass, String msg) {
+	public static byte[] encodeByPFXPublicKey(String storePath,
+			String storePass, String alias, String certPass, byte[] msg) {
 		return encodeByKeyStorePublicKey(storePath, storePass,
 				DigitalCertificateGenerator.KEY_STORE_TYPE_PKCS12, alias,
 				certPass, msg);
 	}
 
-	public static String encodeByJKSPrivateKey(String storePath,
-			String storePass, String alias, String certPass, String msg) {
+	public static byte[] encodeByJKSPrivateKey(String storePath,
+			String storePass, String alias, String certPass, byte[] msg) {
 		return encodeByKeyStorePrivateKey(storePath, storePass,
 				DigitalCertificateGenerator.KEY_STORE_TYPE_JKS, alias,
 				certPass, msg);
 	}
 
-	public static String decodeByJKSPrivateKey(String storePath,
-			String storePass, String alias, String certPass, String msg) {
+	public static byte[] decodeByJKSPrivateKey(String storePath,
+			String storePass, String alias, String certPass, byte[] msg) {
 		return decodeByKeyStorePrivateKey(storePath, storePass,
 				DigitalCertificateGenerator.KEY_STORE_TYPE_JKS, alias,
 				certPass, msg);
 	}
 
-	public static String decodeByPFXPrivateKey(String storePath,
-			String storePass, String alias, String certPass, String msg) {
+	public static byte[] decodeByPFXPrivateKey(String storePath,
+			String storePass, String alias, String certPass, byte[] msg) {
 		return decodeByKeyStorePrivateKey(storePath, storePass,
 				DigitalCertificateGenerator.KEY_STORE_TYPE_PKCS12, alias,
 				certPass, msg);
 	}
 
-	public static String encodeByPFXPrivateKey(String storePath,
-			String storePass, String alias, String certPass, String msg) {
+	public static byte[] encodeByPFXPrivateKey(String storePath,
+			String storePass, String alias, String certPass, byte[] msg) {
 		return encodeByKeyStorePrivateKey(storePath, storePass,
 				DigitalCertificateGenerator.KEY_STORE_TYPE_PKCS12, alias,
 				certPass, msg);
 	}
 
-	public static String encodeByKeyStorePublicKey(String storePath,
+	public static byte[] encodeByKeyStorePublicKey(String storePath,
 			String storePass, String storeType, String alias, String certPass,
-			String msg) {
+			byte[] msg) {
 		PublicKey pk = publicKeyInKeyStore(storePath, storePass, storeType,
 				alias, certPass);
 		return crypt(Cipher.ENCRYPT_MODE, pk, msg);
 	}
 
-	public static String decodeByKeyStorePublicKey(String storePath,
+	public static byte[] decodeByKeyStorePublicKey(String storePath,
 			String storePass, String storeType, String alias, String certPass,
-			String msg) {
+			byte[] msg) {
 		PublicKey pk = publicKeyInKeyStore(storePath, storePass, storeType,
 				alias, certPass);
 		return crypt(Cipher.DECRYPT_MODE, pk, msg);
 	}
 
-	public static String encodeByKeyStorePrivateKey(String storePath,
+	public static byte[] encodeByKeyStorePrivateKey(String storePath,
 			String storePass, String storeType, String alias, String certPass,
-			String msg) {
+			byte[] msg) {
 
 		PrivateKey pk = privateKeyInKeyStore(storePath, storePass, storeType,
 				alias, certPass);
@@ -117,9 +117,9 @@ public class CertUtil {
 
 	}
 
-	public static String decodeByKeyStorePrivateKey(String storePath,
+	public static byte[] decodeByKeyStorePrivateKey(String storePath,
 			String storePass, String storeType, String alias, String certPass,
-			String msg) {
+			byte[] msg) {
 
 		PrivateKey pk = privateKeyInKeyStore(storePath, storePass, storeType,
 				alias, certPass);
@@ -128,13 +128,13 @@ public class CertUtil {
 
 	}
 
-	private static String crypt(int opmode, Key key, String input) {
+	private static byte[] crypt(int opmode, Key key, byte[] input) {
 		Cipher cipher;
 		try {
 			cipher = Cipher
 					.getInstance(DigitalCertificateGenerator.KEY_PAIR_ALGORITHM_RSA);
 			cipher.init(opmode, key);
-			return new String(cipher.doFinal(input.getBytes()));
+			return cipher.doFinal(input);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (NoSuchPaddingException e) {

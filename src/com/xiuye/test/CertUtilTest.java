@@ -64,6 +64,38 @@ public class CertUtilTest {
 	}
 
 	@Test
+	public void testKeyStoreEncodeAndDecode() {
+		String msg = "你好啊,奔跑者!";
+		byte[] data = CertUtil.encodeByJKSPrivateKey("CurrentTest.keystore",
+				"789", "无名3", "101", msg.getBytes());
+		System.out.println(new String(data));
+		data = CertUtil.decodeByJKSPublicKey("CurrentTest.keystore", "789",
+				"无名3", "101", data);
+		System.out.println(new String(data));
+		System.out.println("==============");
+		data = CertUtil.encodeByJKSPublicKey("CurrentTest.keystore", "789",
+				"无名3", "101", msg.getBytes());
+		System.out.println(new String(data));
+		data = CertUtil.decodeByJKSPrivateKey("CurrentTest.keystore", "789",
+				"无名3", "101", data);
+		System.out.println(new String(data));
+		System.out.println("==============");
+		data = CertUtil.encodeByPFXPublicKey("CurrentTest.pfx", "123", "荆轲6",
+				"456", msg.getBytes());
+		System.out.println(new String(data));
+		data = CertUtil.decodeByPFXPrivateKey("CurrentTest.pfx", "123", "荆轲6",
+				"456", data);
+		System.out.println(new String(data));
+		System.out.println("==============");
+		data = CertUtil.encodeByPFXPublicKey("CurrentTest.pfx", "123", "荆轲6",
+				"456", msg.getBytes());
+		System.out.println(new String(data));
+		data = CertUtil.decodeByPFXPrivateKey("CurrentTest.pfx", "123", "荆轲6",
+				"456", data);
+		System.out.println(new String(data));
+	}
+
+	@Test
 	public void testEncodeAndDecode() {
 
 		try {
