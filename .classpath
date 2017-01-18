@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="lib/bcprov-jdk15on-156.jar"/>
 	<classpathentry kind="lib" path="lib/bctest-jdk15on-156.jar"/>
 	<classpathentry kind="lib" path="lib/bctls-jdk15on-156.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
