@@ -34,6 +34,66 @@ import com.xiuye.cert.DigitalCertificateGenerator;
 
 public class CertUtil {
 
+	public static byte[] encodeByKeyStorePublicKey(KeyStore ks, String alias,
+			byte[] input) {
+
+		try {
+			PublicKey pk = ks.getCertificate(alias).getPublicKey();
+			return crypt(Cipher.ENCRYPT_MODE, pk, input);
+		} catch (KeyStoreException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public static byte[] decodeByKeyStorePublicKey(KeyStore ks, String alias,
+			byte[] input) {
+
+		try {
+			PublicKey pk = ks.getCertificate(alias).getPublicKey();
+			return crypt(Cipher.DECRYPT_MODE, pk, input);
+		} catch (KeyStoreException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public static byte[] decodeByKeyStorePrivateKey(KeyStore ks, String alias,
+			String certPass, byte[] input) {
+		PrivateKey pk;
+		try {
+			pk = (PrivateKey) ks.getKey(alias, certPass.toCharArray());
+			return crypt(Cipher.DECRYPT_MODE, pk, input);
+		} catch (UnrecoverableKeyException e) {
+			e.printStackTrace();
+		} catch (KeyStoreException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public static byte[] encodeByKeyStorePrivateKey(KeyStore ks, String alias,
+			String certPass, byte[] input) {
+		PrivateKey pk;
+		try {
+			pk = (PrivateKey) ks.getKey(alias, certPass.toCharArray());
+			return crypt(Cipher.ENCRYPT_MODE, pk, input);
+		} catch (UnrecoverableKeyException e) {
+			e.printStackTrace();
+		} catch (KeyStoreException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
 	public static byte[] encodeByJKSPublicKey(String storePath,
 			String storePass, String alias, String certPass, byte[] msg) {
 		return encodeByKeyStorePublicKey(storePath, storePass,
