@@ -204,7 +204,7 @@ public class CertUtil {
 
 	}
 
-	public static String decodeByCert(String certPath, String msg) {
+	public static byte[] decodeByCert(String certPath, byte[] msgData) {
 		try {
 
 			PublicKey pk = publicKeyInCert(certPath);
@@ -213,9 +213,9 @@ public class CertUtil {
 					.getInstance(DigitalCertificateGenerator.KEY_PAIR_ALGORITHM_RSA);
 			cipher.init(Cipher.DECRYPT_MODE, pk);
 
-			byte[] data = cipher.doFinal(msg.getBytes());
+			byte[] data = cipher.doFinal(msgData);
 
-			return new String(data);
+			return data;
 
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
@@ -232,7 +232,7 @@ public class CertUtil {
 
 	}
 
-	public static String encodeByCert(String certPath, String msg) {
+	public static byte[] encodeByCert(String certPath, byte[] msgData) {
 		try {
 
 			PublicKey pk = publicKeyInCert(certPath);
@@ -240,9 +240,9 @@ public class CertUtil {
 			Cipher cipher = Cipher.getInstance("RSA");
 			cipher.init(Cipher.ENCRYPT_MODE, pk);
 
-			byte[] data = cipher.doFinal(msg.getBytes());
+			byte[] data = cipher.doFinal(msgData);
 
-			return new String(data);
+			return data;
 
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
