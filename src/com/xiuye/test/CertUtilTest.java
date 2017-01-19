@@ -45,11 +45,9 @@ public class CertUtilTest {
 		System.out.println(CertUtil.publicKeyInCert("wuming3.cer"));
 
 		System.out.println("1 := "
-				+ CertUtil.publicKeyInJKS("CurrentTest.keystore", "789", "无名3",
-						"101"));
+				+ CertUtil.publicKeyInJKS("CurrentTest.keystore", "789", "无名3"));
 		System.out.println("2 := "
-				+ CertUtil.publicKeyInPFX("CurrentTest.pfx", "123", "荆轲6",
-						"456"));
+				+ CertUtil.publicKeyInPFX("CurrentTest.pfx", "123", "荆轲6"));
 
 	}
 
@@ -70,25 +68,25 @@ public class CertUtilTest {
 				"789", "无名3", "101", msg.getBytes());
 		System.out.println(new String(data));
 		data = CertUtil.decodeByJKSPublicKey("CurrentTest.keystore", "789",
-				"无名3", "101", data);
+				"无名3",  data);
 		System.out.println(new String(data));
 		System.out.println("==============");
 		data = CertUtil.encodeByJKSPublicKey("CurrentTest.keystore", "789",
-				"无名3", "101", msg.getBytes());
+				"无名3",  msg.getBytes());
 		System.out.println(new String(data));
 		data = CertUtil.decodeByJKSPrivateKey("CurrentTest.keystore", "789",
 				"无名3", "101", data);
 		System.out.println(new String(data));
 		System.out.println("==============");
 		data = CertUtil.encodeByPFXPublicKey("CurrentTest.pfx", "123", "荆轲6",
-				"456", msg.getBytes());
+				 msg.getBytes());
 		System.out.println(new String(data));
 		data = CertUtil.decodeByPFXPrivateKey("CurrentTest.pfx", "123", "荆轲6",
 				"456", data);
 		System.out.println(new String(data));
 		System.out.println("==============");
 		data = CertUtil.encodeByPFXPublicKey("CurrentTest.pfx", "123", "荆轲6",
-				"456", msg.getBytes());
+				 msg.getBytes());
 		System.out.println(new String(data));
 		data = CertUtil.decodeByPFXPrivateKey("CurrentTest.pfx", "123", "荆轲6",
 				"456", data);
@@ -100,9 +98,9 @@ public class CertUtilTest {
 
 		try {
 			PublicKey publicKey1 = CertUtil.publicKeyInJKS(
-					"CurrentTest.keystore", "789", "无名3", "101");
+					"CurrentTest.keystore", "789", "无名3");
 			PublicKey publicKey2 = CertUtil.publicKeyInPFX("CurrentTest.pfx",
-					"123", "荆轲6", "456");
+					"123", "荆轲6");
 
 			PrivateKey privateKey1 = CertUtil.privateKeyInJKS(
 					"CurrentTest.keystore", "789", "无名3", "101");
