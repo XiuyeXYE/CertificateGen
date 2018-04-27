@@ -24,7 +24,7 @@ import com.xiuye.cert.bean.KeyStoreInfo;
 import com.xiuye.cert.bean.SignedCertInfo;
 
 import sun.security.x509.AlgorithmId;
-import sun.security.x509.CertAndKeyGen;
+import sun.security.tools.keytool.CertAndKeyGen;
 import sun.security.x509.CertificateAlgorithmId;
 import sun.security.x509.CertificateIssuerName;
 import sun.security.x509.CertificateSerialNumber;
