@@ -11,6 +11,7 @@ public class CertUtilTest {
 
 		// "wuming3.cer"是根证书导出的公钥证书,"signed.cer"是签发的子证书.
 		CertUtil.verifySign("wuming3.cer", "signed.cer");
+		CertUtil.verifySign("wuming3.cer", "wuming3.cer");
 		System.out.println("test passed!");
 	}
 
