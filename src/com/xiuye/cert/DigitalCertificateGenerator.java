@@ -48,20 +48,14 @@ public class DigitalCertificateGenerator {
 
 	public static void signCertPFXForSubject(SignedCertInfo signedCertInfo) {
 		try {
-			X500Name subject = new X500Name("CN=" + signedCertInfo.getCN()
-					+ ",OU=" + signedCertInfo.getOU() + ",O="
-					+ signedCertInfo.getO() + ",L=" + signedCertInfo.getL()
-					+ ",ST=" + signedCertInfo.getST() + ",C="
+			X500Name subject = new X500Name("CN=" + signedCertInfo.getCN() + ",OU=" + signedCertInfo.getOU() + ",O="
+					+ signedCertInfo.getO() + ",L=" + signedCertInfo.getL() + ",ST=" + signedCertInfo.getST() + ",C="
 					+ signedCertInfo.getC());
 
-			issueSignedCert(signedCertInfo.getKeyStorePath(),
-					signedCertInfo.getKeyStorePass(), KEY_STORE_TYPE_PKCS12,
-					signedCertInfo.getIssuerAlias(),
-					signedCertInfo.getIssuerAliasPass(),
-					signedCertInfo.getSubjectAlias(),
-					signedCertInfo.getSubjectAliasPass(), subject,
-					signedCertInfo.getValidity(),
-					signedCertInfo.getSubjectPath());
+			issueSignedCert(signedCertInfo.getKeyStorePath(), signedCertInfo.getKeyStorePass(), KEY_STORE_TYPE_PKCS12,
+					signedCertInfo.getIssuerAlias(), signedCertInfo.getIssuerAliasPass(),
+					signedCertInfo.getSubjectAlias(), signedCertInfo.getSubjectAliasPass(), subject,
+					signedCertInfo.getValidity(), signedCertInfo.getSubjectPath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -69,30 +63,22 @@ public class DigitalCertificateGenerator {
 
 	public static void signCertJKSForSubject(SignedCertInfo signedCertInfo) {
 		try {
-			X500Name subject = new X500Name("CN=" + signedCertInfo.getCN()
-					+ ",OU=" + signedCertInfo.getOU() + ",O="
-					+ signedCertInfo.getO() + ",L=" + signedCertInfo.getL()
-					+ ",ST=" + signedCertInfo.getST() + ",C="
+			X500Name subject = new X500Name("CN=" + signedCertInfo.getCN() + ",OU=" + signedCertInfo.getOU() + ",O="
+					+ signedCertInfo.getO() + ",L=" + signedCertInfo.getL() + ",ST=" + signedCertInfo.getST() + ",C="
 					+ signedCertInfo.getC());
 
-			issueSignedCert(signedCertInfo.getKeyStorePath(),
-					signedCertInfo.getKeyStorePass(), KEY_STORE_TYPE_JKS,
-					signedCertInfo.getIssuerAlias(),
-					signedCertInfo.getIssuerAliasPass(),
-					signedCertInfo.getSubjectAlias(),
-					signedCertInfo.getSubjectAliasPass(), subject,
-					signedCertInfo.getValidity(),
-					signedCertInfo.getSubjectPath());
+			issueSignedCert(signedCertInfo.getKeyStorePath(), signedCertInfo.getKeyStorePass(), KEY_STORE_TYPE_JKS,
+					signedCertInfo.getIssuerAlias(), signedCertInfo.getIssuerAliasPass(),
+					signedCertInfo.getSubjectAlias(), signedCertInfo.getSubjectAliasPass(), subject,
+					signedCertInfo.getValidity(), signedCertInfo.getSubjectPath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void issueSignedCert(String keyStorePath,
-			String keyStorePass, String keyStoreType, String issuerAlias,
-			String issuerAliasPass, String subjectAlias,
-			String subjectAliasPass, X500Name subject, int validity,
-			String subjectPath) {
+	public static void issueSignedCert(String keyStorePath, String keyStorePass, String keyStoreType,
+			String issuerAlias, String issuerAliasPass, String subjectAlias, String subjectAliasPass, X500Name subject,
+			int validity, String subjectPath) {
 
 		FileOutputStream fos = null;
 		FileOutputStream keyStoreFos = null;
@@ -104,45 +90,34 @@ public class DigitalCertificateGenerator {
 			KeyStore ks = KeyStore.getInstance(keyStoreType);
 			ks.load(fis, keyStorePass.toCharArray());
 
-			X509Certificate issuerCert = (X509Certificate) ks
-					.getCertificate(issuerAlias);
-			X509CertImpl issuerCertImpl = new X509CertImpl(
-					issuerCert.getEncoded());
+			X509Certificate issuerCert = (X509Certificate) ks.getCertificate(issuerAlias);
+			X509CertImpl issuerCertImpl = new X509CertImpl(issuerCert.getEncoded());
 			X509CertInfo issuerCertInfo = (X509CertInfo) issuerCertImpl
 					.get(X509CertImpl.NAME + "." + X509CertImpl.INFO);
 
-			X500Name issuer = (X500Name) issuerCertInfo
-					.get(X509CertInfo.SUBJECT + "."
-							+ CertificateIssuerName.DN_NAME);
-			PrivateKey pk = (PrivateKey) ks.getKey(issuerAlias,
-					issuerAliasPass.toCharArray());
+			X500Name issuer = (X500Name) issuerCertInfo.get(X509CertInfo.SUBJECT + "." + CertificateIssuerName.DN_NAME);
+			PrivateKey pk = (PrivateKey) ks.getKey(issuerAlias, issuerAliasPass.toCharArray());
 
-			CertAndKeyGen cakg = new CertAndKeyGen(KEY_PAIR_ALGORITHM_RSA,
-					SIGN_ALGORITHM_SHA256);
-			SecureRandom sr = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM,
-					SECURE_RANDOM_PROVIDER);
+			CertAndKeyGen cakg = new CertAndKeyGen(KEY_PAIR_ALGORITHM_RSA, SIGN_ALGORITHM_SHA256);
+			SecureRandom sr = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM, SECURE_RANDOM_PROVIDER);
 			cakg.setRandom(sr);
 			cakg.generate(2048);
 
 			X509CertInfo info = new X509CertInfo();
-			info.set(X509CertInfo.VERSION, new CertificateVersion(
-					CertificateVersion.V3));
-			info.set(X509CertInfo.SERIAL_NUMBER, new CertificateSerialNumber(
-					new Random().nextInt() & 0x7fffffff));
+			info.set(X509CertInfo.VERSION, new CertificateVersion(CertificateVersion.V3));
+			info.set(X509CertInfo.SERIAL_NUMBER, new CertificateSerialNumber(new Random().nextInt() & 0x7fffffff));
 
 			AlgorithmId aid = AlgorithmId.get(SIGN_ALGORITHM_SHA256);
 			info.set(X509CertInfo.ALGORITHM_ID, new CertificateAlgorithmId(aid));
 //			info.set(X509CertInfo.SUBJECT, new CertificateSubjectName(subject));
 //			info.set(X509CertInfo.ISSUER, new CertificateIssuerName(issuer));
 			info.set(X509CertInfo.SUBJECT, subject);
-			info.set(X509CertInfo.ISSUER, issuer);			info.set(X509CertInfo.KEY,
-					new CertificateX509Key(cakg.getPublicKey()));
+			info.set(X509CertInfo.ISSUER, issuer);
+			info.set(X509CertInfo.KEY, new CertificateX509Key(cakg.getPublicKey()));
 			Date fistDate = new Date();
 			Date lastDate = new Date();
-			lastDate.setTime(fistDate.getTime()
-					+ (validity * 24L * 60L * 60L * 1000));
-			CertificateValidity interval = new CertificateValidity(fistDate,
-					lastDate);
+			lastDate.setTime(fistDate.getTime() + (validity * 24L * 60L * 60L * 1000));
+			CertificateValidity interval = new CertificateValidity(fistDate, lastDate);
 			info.set(X509CertInfo.VALIDITY, interval);
 
 			X509CertImpl cert = new X509CertImpl(info);
@@ -151,11 +126,9 @@ public class DigitalCertificateGenerator {
 
 			X509Certificate subjectCert = cert;
 
-			X509Certificate[] chain = new X509Certificate[] { subjectCert,
-					issuerCert };
+			X509Certificate[] chain = new X509Certificate[] { subjectCert, issuerCert };
 
-			ks.setKeyEntry(subjectAlias, cakg.getPrivateKey(),
-					subjectAliasPass.toCharArray(), chain);
+			ks.setKeyEntry(subjectAlias, cakg.getPrivateKey(), subjectAliasPass.toCharArray(), chain);
 
 			keyStoreFos = new FileOutputStream(keyStorePath);
 
@@ -201,26 +174,23 @@ public class DigitalCertificateGenerator {
 		}
 	}
 
-	public static void exportPFXPublicKeyCertificate(
-			String keyStorePathAndFileName, String keyStorePass, String alias,
+	public static void exportPFXPublicKeyCertificate(String keyStorePathAndFileName, String keyStorePass, String alias,
 			String exportPathAndFileName) {
 
-		exportPublicKeyCertificate(keyStorePathAndFileName, keyStorePass,
-				KEY_STORE_TYPE_PKCS12, alias, exportPathAndFileName);
+		exportPublicKeyCertificate(keyStorePathAndFileName, keyStorePass, KEY_STORE_TYPE_PKCS12, alias,
+				exportPathAndFileName);
 
 	}
 
-	public static void exportJKSPublicKeyCertificate(
-			String keyStorePathAndFileName, String keyStorePass, String alias,
+	public static void exportJKSPublicKeyCertificate(String keyStorePathAndFileName, String keyStorePass, String alias,
 			String exportPathAndFileName) {
 
-		exportPublicKeyCertificate(keyStorePathAndFileName, keyStorePass,
-				KEY_STORE_TYPE_JKS, alias, exportPathAndFileName);
+		exportPublicKeyCertificate(keyStorePathAndFileName, keyStorePass, KEY_STORE_TYPE_JKS, alias,
+				exportPathAndFileName);
 
 	}
 
-	public static void exportPublicKeyCertificate(
-			String keyStorePathAndFileName, String keyStorePass,
+	public static void exportPublicKeyCertificate(String keyStorePathAndFileName, String keyStorePass,
 			String keyStoreType, String alias, String exportPathAndFileName) {
 		FileOutputStream fos = null;
 		FileInputStream fis = null;
@@ -257,116 +227,83 @@ public class DigitalCertificateGenerator {
 		}
 	}
 
-	public static void generatePFX(String alias, String keyStorePass,
-			String certPass, String CN, String OU, String O, String L,
-			String ST, String C, Date start, long validityDays,
-			String pathAndFileName) {
-		generateDigitalCert(KEY_STORE_TYPE_PKCS12, SIGN_ALGORITHM_SHA256,
-				KEY_PAIR_ALGORITHM_RSA, SECURE_RANDOM_ALGORITHM,
-				SECURE_RANDOM_PROVIDER, alias, keyStorePass, certPass, CN, OU,
-				O, L, ST, C, start, validityDays, pathAndFileName, true);
+	public static void generatePFX(String alias, String keyStorePass, String certPass, String CN, String OU, String O,
+			String L, String ST, String C, Date start, long validityDays, String pathAndFileName) {
+		generateDigitalCert(KEY_STORE_TYPE_PKCS12, SIGN_ALGORITHM_SHA256, KEY_PAIR_ALGORITHM_RSA,
+				SECURE_RANDOM_ALGORITHM, SECURE_RANDOM_PROVIDER, alias, keyStorePass, certPass, CN, OU, O, L, ST, C,
+				start, validityDays, pathAndFileName, true);
 
 	}
 
-	public static void addNewCert2PFX(String alias, String keyStorePass,
-			String certPass, String CN, String OU, String O, String L,
-			String ST, String C, Date start, long validityDays,
-			String pathAndFileName) {
-		generateDigitalCert(KEY_STORE_TYPE_PKCS12, SIGN_ALGORITHM_SHA256,
-				KEY_PAIR_ALGORITHM_RSA, SECURE_RANDOM_ALGORITHM,
-				SECURE_RANDOM_PROVIDER, alias, keyStorePass, certPass, CN, OU,
-				O, L, ST, C, start, validityDays, pathAndFileName, false);
+	public static void addNewCert2PFX(String alias, String keyStorePass, String certPass, String CN, String OU,
+			String O, String L, String ST, String C, Date start, long validityDays, String pathAndFileName) {
+		generateDigitalCert(KEY_STORE_TYPE_PKCS12, SIGN_ALGORITHM_SHA256, KEY_PAIR_ALGORITHM_RSA,
+				SECURE_RANDOM_ALGORITHM, SECURE_RANDOM_PROVIDER, alias, keyStorePass, certPass, CN, OU, O, L, ST, C,
+				start, validityDays, pathAndFileName, false);
 
 	}
 
 	public static void addNewCert2PFX(KeyStoreInfo certInfo) {
-		generateDigitalCert(KEY_STORE_TYPE_PKCS12, SIGN_ALGORITHM_SHA256,
-				KEY_PAIR_ALGORITHM_RSA, SECURE_RANDOM_ALGORITHM,
-				SECURE_RANDOM_PROVIDER, certInfo.getAlias(),
-				certInfo.getKeyStorePass(), certInfo.getCertPass(),
-				certInfo.getCN(), certInfo.getOU(), certInfo.getO(),
-				certInfo.getL(), certInfo.getST(), certInfo.getC(),
-				certInfo.getStart(), certInfo.getValidityDays(),
+		generateDigitalCert(KEY_STORE_TYPE_PKCS12, SIGN_ALGORITHM_SHA256, KEY_PAIR_ALGORITHM_RSA,
+				SECURE_RANDOM_ALGORITHM, SECURE_RANDOM_PROVIDER, certInfo.getAlias(), certInfo.getKeyStorePass(),
+				certInfo.getCertPass(), certInfo.getCN(), certInfo.getOU(), certInfo.getO(), certInfo.getL(),
+				certInfo.getST(), certInfo.getC(), certInfo.getStart(), certInfo.getValidityDays(),
 				certInfo.getPathAndFileName(), false);
 	}
 
 	public static void generatePFX(KeyStoreInfo certInfo) {
-		generateDigitalCert(KEY_STORE_TYPE_PKCS12, SIGN_ALGORITHM_SHA256,
-				KEY_PAIR_ALGORITHM_RSA, SECURE_RANDOM_ALGORITHM,
-				SECURE_RANDOM_PROVIDER, certInfo.getAlias(),
-				certInfo.getKeyStorePass(), certInfo.getCertPass(),
-				certInfo.getCN(), certInfo.getOU(), certInfo.getO(),
-				certInfo.getL(), certInfo.getST(), certInfo.getC(),
-				certInfo.getStart(), certInfo.getValidityDays(),
+		generateDigitalCert(KEY_STORE_TYPE_PKCS12, SIGN_ALGORITHM_SHA256, KEY_PAIR_ALGORITHM_RSA,
+				SECURE_RANDOM_ALGORITHM, SECURE_RANDOM_PROVIDER, certInfo.getAlias(), certInfo.getKeyStorePass(),
+				certInfo.getCertPass(), certInfo.getCN(), certInfo.getOU(), certInfo.getO(), certInfo.getL(),
+				certInfo.getST(), certInfo.getC(), certInfo.getStart(), certInfo.getValidityDays(),
 				certInfo.getPathAndFileName(), true);
 	}
 
-	public static void generateJKS(String alias, String keyStorePass,
-			String certPass, String CN, String OU, String O, String L,
-			String ST, String C, Date start, long validityDays,
-			String pathAndFileName) {
-		generateDigitalCert(KEY_STORE_TYPE_JKS, SIGN_ALGORITHM_SHA256,
-				KEY_PAIR_ALGORITHM_RSA, SECURE_RANDOM_ALGORITHM,
-				SECURE_RANDOM_PROVIDER, alias, keyStorePass, certPass, CN, OU,
-				O, L, ST, C, start, validityDays, pathAndFileName, true);
+	public static void generateJKS(String alias, String keyStorePass, String certPass, String CN, String OU, String O,
+			String L, String ST, String C, Date start, long validityDays, String pathAndFileName) {
+		generateDigitalCert(KEY_STORE_TYPE_JKS, SIGN_ALGORITHM_SHA256, KEY_PAIR_ALGORITHM_RSA, SECURE_RANDOM_ALGORITHM,
+				SECURE_RANDOM_PROVIDER, alias, keyStorePass, certPass, CN, OU, O, L, ST, C, start, validityDays,
+				pathAndFileName, true);
 	}
 
-	public static void addNewCert2JKS(String alias, String keyStorePass,
-			String certPass, String CN, String OU, String O, String L,
-			String ST, String C, Date start, long validityDays,
-			String pathAndFileName) {
-		generateDigitalCert(KEY_STORE_TYPE_JKS, SIGN_ALGORITHM_SHA256,
-				KEY_PAIR_ALGORITHM_RSA, SECURE_RANDOM_ALGORITHM,
-				SECURE_RANDOM_PROVIDER, alias, keyStorePass, certPass, CN, OU,
-				O, L, ST, C, start, validityDays, pathAndFileName, false);
+	public static void addNewCert2JKS(String alias, String keyStorePass, String certPass, String CN, String OU,
+			String O, String L, String ST, String C, Date start, long validityDays, String pathAndFileName) {
+		generateDigitalCert(KEY_STORE_TYPE_JKS, SIGN_ALGORITHM_SHA256, KEY_PAIR_ALGORITHM_RSA, SECURE_RANDOM_ALGORITHM,
+				SECURE_RANDOM_PROVIDER, alias, keyStorePass, certPass, CN, OU, O, L, ST, C, start, validityDays,
+				pathAndFileName, false);
 	}
 
 	public static void generateJKS(KeyStoreInfo certInfo) {
-		generateDigitalCert(KEY_STORE_TYPE_JKS, SIGN_ALGORITHM_SHA256,
-				KEY_PAIR_ALGORITHM_RSA, SECURE_RANDOM_ALGORITHM,
-				SECURE_RANDOM_PROVIDER, certInfo.getAlias(),
-				certInfo.getKeyStorePass(), certInfo.getCertPass(),
-				certInfo.getCN(), certInfo.getOU(), certInfo.getO(),
-				certInfo.getL(), certInfo.getST(), certInfo.getC(),
-				certInfo.getStart(), certInfo.getValidityDays(),
-				certInfo.getPathAndFileName(), true);
+		generateDigitalCert(KEY_STORE_TYPE_JKS, SIGN_ALGORITHM_SHA256, KEY_PAIR_ALGORITHM_RSA, SECURE_RANDOM_ALGORITHM,
+				SECURE_RANDOM_PROVIDER, certInfo.getAlias(), certInfo.getKeyStorePass(), certInfo.getCertPass(),
+				certInfo.getCN(), certInfo.getOU(), certInfo.getO(), certInfo.getL(), certInfo.getST(), certInfo.getC(),
+				certInfo.getStart(), certInfo.getValidityDays(), certInfo.getPathAndFileName(), true);
 	}
 
 	public static void addNewCert2JKS(KeyStoreInfo certInfo) {
-		generateDigitalCert(KEY_STORE_TYPE_JKS, SIGN_ALGORITHM_SHA256,
-				KEY_PAIR_ALGORITHM_RSA, SECURE_RANDOM_ALGORITHM,
-				SECURE_RANDOM_PROVIDER, certInfo.getAlias(),
-				certInfo.getKeyStorePass(), certInfo.getCertPass(),
-				certInfo.getCN(), certInfo.getOU(), certInfo.getO(),
-				certInfo.getL(), certInfo.getST(), certInfo.getC(),
-				certInfo.getStart(), certInfo.getValidityDays(),
-				certInfo.getPathAndFileName(), false);
+		generateDigitalCert(KEY_STORE_TYPE_JKS, SIGN_ALGORITHM_SHA256, KEY_PAIR_ALGORITHM_RSA, SECURE_RANDOM_ALGORITHM,
+				SECURE_RANDOM_PROVIDER, certInfo.getAlias(), certInfo.getKeyStorePass(), certInfo.getCertPass(),
+				certInfo.getCN(), certInfo.getOU(), certInfo.getO(), certInfo.getL(), certInfo.getST(), certInfo.getC(),
+				certInfo.getStart(), certInfo.getValidityDays(), certInfo.getPathAndFileName(), false);
 	}
 
-	public static void generateDigitalCert(String keyStoreType,
-			String signAlgorithm, String keyPairAlgorithm,
-			String secureRandomAlgorithm, String secureRandomProvider,
-			String alias, String keyStorePass, String certPass, String CN,
-			String OU, String O, String L, String ST, String C, Date start,
+	public static void generateDigitalCert(String keyStoreType, String signAlgorithm, String keyPairAlgorithm,
+			String secureRandomAlgorithm, String secureRandomProvider, String alias, String keyStorePass,
+			String certPass, String CN, String OU, String O, String L, String ST, String C, Date start,
 			long validityDays, String pathAndFileName, boolean createNew) {
 		FileOutputStream out = null;
 		try {
-			SecureRandom sr = SecureRandom.getInstance(secureRandomAlgorithm,
-					secureRandomProvider);
-			CertAndKeyGen cakg = new CertAndKeyGen(keyPairAlgorithm,
-					signAlgorithm);
+			SecureRandom sr = SecureRandom.getInstance(secureRandomAlgorithm, secureRandomProvider);
+			CertAndKeyGen cakg = new CertAndKeyGen(keyPairAlgorithm, signAlgorithm);
 			cakg.setRandom(sr);
 			cakg.generate(2048);
-			X500Name subject = new X500Name("CN=" + CN + ",OU=" + OU + ",O="
-					+ O + ",L=" + L + ",ST=" + ST + ",C=" + C);
+			X500Name subject = new X500Name("CN=" + CN + ",OU=" + OU + ",O=" + O + ",L=" + L + ",ST=" + ST + ",C=" + C);
 
-			X509Certificate certificate = cakg.getSelfCertificate(subject,
-					start, validityDays * 24L * 60L * 60L);
+			X509Certificate certificate = cakg.getSelfCertificate(subject, start, validityDays * 24L * 60L * 60L);
 			KeyStore outStore = KeyStore.getInstance(keyStoreType);
 			if (createNew) {
 				outStore.load(null, keyStorePass.toCharArray());
-				outStore.setKeyEntry(alias, cakg.getPrivateKey(),
-						certPass.toCharArray(),
+				outStore.setKeyEntry(alias, cakg.getPrivateKey(), certPass.toCharArray(),
 						new Certificate[] { certificate });
 			} else {
 				File f = new File(pathAndFileName);
@@ -377,8 +314,7 @@ public class DigitalCertificateGenerator {
 				FileInputStream fis = new FileInputStream(f);
 				outStore.load(fis, keyStorePass.toCharArray());
 				fis.close();
-				outStore.setKeyEntry(alias, cakg.getPrivateKey(),
-						certPass.toCharArray(),
+				outStore.setKeyEntry(alias, cakg.getPrivateKey(), certPass.toCharArray(),
 						new Certificate[] { certificate });
 
 			}
