@@ -132,9 +132,10 @@ public class DigitalCertificateGenerator {
 
 			AlgorithmId aid = AlgorithmId.get(SIGN_ALGORITHM_SHA256);
 			info.set(X509CertInfo.ALGORITHM_ID, new CertificateAlgorithmId(aid));
-			info.set(X509CertInfo.SUBJECT, new CertificateSubjectName(subject));
-			info.set(X509CertInfo.ISSUER, new CertificateIssuerName(issuer));
-			info.set(X509CertInfo.KEY,
+//			info.set(X509CertInfo.SUBJECT, new CertificateSubjectName(subject));
+//			info.set(X509CertInfo.ISSUER, new CertificateIssuerName(issuer));
+			info.set(X509CertInfo.SUBJECT, subject);
+			info.set(X509CertInfo.ISSUER, issuer);			info.set(X509CertInfo.KEY,
 					new CertificateX509Key(cakg.getPublicKey()));
 			Date fistDate = new Date();
 			Date lastDate = new Date();

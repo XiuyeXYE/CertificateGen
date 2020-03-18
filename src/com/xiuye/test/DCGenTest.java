@@ -7,21 +7,22 @@ import org.junit.Test;
 import com.xiuye.cert.DigitalCertificateGenerator;
 import com.xiuye.cert.bean.KeyStoreInfo;
 import com.xiuye.cert.bean.SignedCertInfo;
+import com.xiuye.cert.util.CertUtil;
 
 public class DCGenTest {
 
 	@Test
 	public void testGenerateCert() {// 生成证书库/证书
 		// 别名,库密码,证书密码,CN,OU,O,L,ST,C,开始时间,有效期限(单位:天),存储路径
-		KeyStoreInfo certInfo = new KeyStoreInfo("荆轲2", "123", "456", "1", "2",
-				"3", "4", "5", "6", new Date(), 365, "CurrentTest.pfx");
+		KeyStoreInfo certInfo = new KeyStoreInfo("荆轲2", "123", "456", "1", "2", "3", "4", "5", "6", new Date(), 365,
+				"CurrentTest.pfx");
 		DigitalCertificateGenerator.generatePFX(certInfo);
 
-		certInfo = new KeyStoreInfo("无名5", "789", "101", "7", "8", "9", "10",
-				"11", "12", new Date(), 365, "wuming5.keystore");
+		certInfo = new KeyStoreInfo("无名5", "789", "101", "7", "8", "9", "10", "11", "12", new Date(), 365,
+				"wuming5.keystore");
 		DigitalCertificateGenerator.generateJKS(certInfo);
-		certInfo = new KeyStoreInfo("无名3", "789", "101", "7", "8", "9", "10",
-				"11", "12", new Date(), 365, "wuming3.keystore");
+		certInfo = new KeyStoreInfo("无名3", "789", "101", "7", "8", "9", "10", "11", "12", new Date(), 365,
+				"wuming3.keystore");
 		DigitalCertificateGenerator.generateJKS(certInfo);
 		System.out.println("testGenerateCert end");
 	}
@@ -29,15 +30,15 @@ public class DCGenTest {
 	@Test
 	public void testAddNewCert() {// 添加新证书到证书库
 
-		KeyStoreInfo certInfo = new KeyStoreInfo("荆轲6", "123", "456", "1", "2",
-				"3", "4", "5", "6", new Date(), 365, "CurrentTest.pfx");
+		KeyStoreInfo certInfo = new KeyStoreInfo("荆轲6", "123", "456", "1", "2", "3", "4", "5", "6", new Date(), 365,
+				"CurrentTest.pfx");
 		DigitalCertificateGenerator.addNewCert2PFX(certInfo);
 
-		certInfo = new KeyStoreInfo("无名9", "789", "101", "7", "8", "9", "10",
-				"11", "12", new Date(), 365, "CurrentTest.keystore");
+		certInfo = new KeyStoreInfo("无名9", "789", "101", "7", "8", "9", "10", "11", "12", new Date(), 365,
+				"CurrentTest.keystore");
 		DigitalCertificateGenerator.addNewCert2JKS(certInfo);
-		certInfo = new KeyStoreInfo("无名7", "789", "101", "7", "8", "9", "10",
-				"11", "12", new Date(), 365, "CurrentTest.keystore");
+		certInfo = new KeyStoreInfo("无名7", "789", "101", "7", "8", "9", "10", "11", "12", new Date(), 365,
+				"CurrentTest.keystore");
 		DigitalCertificateGenerator.addNewCert2JKS(certInfo);
 		System.out.println("testAddNewCert end");
 	}
@@ -45,20 +46,18 @@ public class DCGenTest {
 	@Test
 	public void testExportCert() {// 导出公钥证书cer
 		// 证书库路径,库密码,别名,cer证书路径
-		DigitalCertificateGenerator.exportJKSPublicKeyCertificate(
-				"CurrentTest.keystore", "789", "无名3", "wuming3.cer");
-		DigitalCertificateGenerator.exportPFXPublicKeyCertificate(
-				"CurrentTest.pfx", "123", "荆轲2", "jingke2.cer");
+		DigitalCertificateGenerator.exportJKSPublicKeyCertificate("CurrentTest.keystore", "789", "无名3", "wuming3.cer");
+		DigitalCertificateGenerator.exportPFXPublicKeyCertificate("CurrentTest.pfx", "123", "荆轲2", "jingke2.cer");
 	}
 
 	@Test
 	public void testSignCert() {// 根据根证书签发证书
 		// 签发证书的信息
 		SignedCertInfo signedCertInfo = new SignedCertInfo();
-		String s = "中原";
+		String s = "中原898";
 		signedCertInfo.setC(s);// 签发证书:C
 		signedCertInfo.setCN(s);// 签发证书:CN
-		signedCertInfo.setIssuerAlias("无名3");// 证书颁发者别名
+		signedCertInfo.setIssuerAlias("无名7");// 证书颁发者别名
 		signedCertInfo.setIssuerAliasPass("101");// 证书颁发者证书密码
 		signedCertInfo.setKeyStorePass("789");// 颁发者的所在证书库
 		signedCertInfo.setKeyStorePath("CurrentTest.keystore");// 颁发者证书库路径
@@ -75,6 +74,11 @@ public class DCGenTest {
 
 		// 签发证书("中原"的证书),并且存储到证书库("CurrentTest.keystore")
 		DigitalCertificateGenerator.signCertJKSForSubject(signedCertInfo);
+	}
+
+	@Test
+	public void listAliases() {
+		System.out.println(CertUtil.allAliasesInJKS("CurrentTest.keystore", "789"));
 	}
 
 }
